@@ -50,6 +50,9 @@ class Greeter {
     }
 }
 
+class ExtendedDecoratedGreeter extends Greeter {
+}
+
 /**
  * This demonstrates that the classDecoratorThatExtends indeed extends the old Greeter class, so the 
  * variable 'Greeter' no longer refers to the old Greeter class but the extended class that is returned
@@ -67,6 +70,18 @@ test('Class decorator that dynamically extends Greeter', t => {
     t.is(g.hello, 'Winston');
     t.is(g.method(), 'old method:Winston');
     t.is(g.newMethod(), 'new method');
+})
+
+test('Subclass of a class that is extended by class decorator also inheritate the extended features', t=>{
+    // test sub class of decorated Greeter
+    const eg = new ExtendedDecoratedGreeter("Winston") as any
+    t.is(eg instanceof Greeter, true);
+    t.is(eg.property, 'old property');
+    t.is(eg.newProperty, 'new property')
+    t.is(eg.hello, 'Winston');
+    t.is(eg.method(), 'old method:Winston');
+    t.is(eg.newMethod(), 'new method');
+
 });
 
 /*************************************************************************************************************************
@@ -121,4 +136,17 @@ test('Class decorator that replaces Bar with Foo', t => {
     t.is(Foo === Bar, true);
 });
 
+/**
+ * A subclass of decorated Foo, is actually a subclass of Bar, as Foo is decorated and replaced by Bar
+ */
 
+class ExtendedFooWhichIsReplacedByBar extends Foo {
+
+}
+
+// this demonstrates that the subclass of Foo is actually subclass of Bar
+
+test('Subclass of Foo which is actually Bar', t=>{
+    const ef = new ExtendedFooWhichIsReplacedByBar()
+    t.is(ef instanceof Bar, true)
+})
