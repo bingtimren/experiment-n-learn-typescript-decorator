@@ -32,8 +32,8 @@ import assert from 'assert';
  * @param descriptor - the property descriptor
  */
 function instanceMethodDecorator(
-  target: any,
-  propertyKey: string,
+  target: Greeter, // in Typescript X.prototype's type is X
+  propertyKey: keyof Greeter,
   descriptor: PropertyDescriptor
 ): PropertyDescriptor {
   // asserts the received arguments are as described
